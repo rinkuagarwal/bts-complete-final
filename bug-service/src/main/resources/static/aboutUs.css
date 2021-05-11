@@ -1,0 +1,54 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.header
+{
+    height: 10vh;
+}
+.navbar-style
+{
+    background-color: grey;
+    
+    height: auto;
+    width: auto;
+
+    box-shadow: 0 5px 10px black;
+    text-transform: uppercase;
+}
+li a{
+    color: #000;
+}
+.logo
+{
+    height: 48px;
+    padding: 2px 10px;
+}
+.icon-bar
+{
+    background: darkorange;
+}
+
+.para1
+{
+    font-size: 40px;
+    margin: 10px 0;
+    color : darkorange;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.para3,.para4{
+    font-size: 20px;
+    margin: 10px 40px ;
+    font-family:'Courier New', Courier, monospace;
+}
+#about-section {
+    padding: 10px;
+    text-align: center;
+    background-color: #474e5d;
+    color: white;
+  }
+  #about{
+    background-color: cornsilk;
+    height:600px;
+    width:auto
+  }

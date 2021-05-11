@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="updateBug.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script type="text/javascript">
+function getBug() {
+	let bugName = document.getElementById('bugName').value;
+	bugName = bugName.trim();
+	if (bugName) {
+		const promise = fetch('/bug/name/' + bugName);
+		promise.then(function(response) {
+			return response.json();
+		}).then(function(bug) {
+			if (bug) {
+				loadBug(bug);
+			}
+
+			else {
+				alert("Invalid Bug Name");
+			}
+		});
+	}
+}
+function loadBug(bug) {
+	
+	document.getElementById('name').value = bug.name;
+	document.getElementById('id').value = bug.id;
+	document.getElementById('Priority').value = bug.priority;
+	document.getElementById('type').value = bug.type;
+	document.getElementById('severity').value = bug.severity;
+	document.getElementById('module').value = bug.module;
+	document.getElementById('submit').value = bug.buildVersion;
+	document.getElementById('description').value = bug.description;
+	document.getElementById('project').value = bug.projectId;
+	document.getElementById('synopsis').value = bug.synopsis;
+	document.getElementById('product').value = bug.product;
+	document.getElementById('Status').value = bug.status;
+	document.getElementById('etaid').value = bug.eta;
+}
+	function updateBugStatus() {
+		function success(response) {
+			if (!response.ok) {
+				alert('Invalid Status');
+				return;
+			}
+			alert("Bug has been updated!");
+			return response.json();
+		}
+		const updateBug = document.getElementById('updateBug');
+		if (!updateBug.checkValidity()) {
+			alert('form is invalid');
+			return;
+		}
+		let bugid = document.getElementById('id').value;
+		const promise = fetch('/bug/' + bugid, {
+			method : 'PUT',
+			headers : {
+				'Content-Type' : 'application/json'
+			},
+			body : JSON.stringify({
+
+				name : document.getElementById('name').value,
+				projectId : document.getElementById('project').value,
+				module : document.getElementById('module').value,
+				type : document.getElementById('type').value,
+				product : document.getElementById('product').value,
+				synopsis : document.getElementById('synopsis').value,
+				severity : document.getElementById('severity').value,
+				description : document.getElementById('description').value,
+				buildVersion : document.getElementById('submit').value,
+				eta : document.getElementById('etaid').value,
+				status : document.getElementById('Status').value,
+				priority : document.getElementById('Priority').value,
+			})
+		});
+		promise.then(success);
+	}
+</script>
+</head>
+<body>
+	<header>
+	<nav class="navbar navbar-expand-md  bg-dark navbar-dark">
+		<div class="container">
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#menu">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a href=""><img class="logo" src="logo.png"></a>
+		</div>
+		<div class="collapse navbar-collapse" id="menu">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+				<li class="nav-item" ><a class="nav-link" href="contactUs.html">Help</a></li>
+				<li class="nav-item"><a class="nav-link" href="aboutUs.html">AboutUs</a></li>
+			</ul>
+		</div>
+	</nav>
+</header>
+
+	<form id="updateBug" class="jumbotron" style="padding-top: 34px;color: grey;
+    font-size: 20px;
+    background-color: cornsilk;
+    width: auto;
+    height: auto;">
+		<p class="para1">Update Bug</p>
+		<div class="form-group row searchForm">
+		
+			<label for="bugName" class="col-sm-2 bugLabel">Bug Name<span>*</span></label>
+			<input class="form-control col-sm-6" style="margin-right:50px" id='bugName'>
+		
+		<button type="button" id="searchBug" class="btn btn-primary col-sm-3 searchButton" onclick="getBug()">Get Bug</button>
+	</div>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="form-group">
+						<label class="control-label col-sm-3  col-md-offset-4" for="Name">Bug
+							Id<span style="color: red">*</span>
+						</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="id" name="bugId"
+								required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3  col-md-offset-4" for="Name">Name<span
+							style="color: red">*</span></label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="name" name="name"
+								required>
+						</div>
+					</div>
+					<div class="form-group">
+							<label class="control-label col-sm-3 col-md-offset-2" for="pwd">Project
+								Id<span style="color:red">*</span>
+							</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="project" 
+									name="projectId" required>
+							</div>
+							</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3  col-md-offset-4" for="pwd">Priority
+							<span style="color: red">*</span>
+						</label>
+						<div class="col-sm-9">
+							<select name="priority" class="form-control" id="Priority">
+								<option value="" disabled selected>Choose value</option>
+								<option value="LOW">LOW</option>
+								<option value="MEDIUM">MEDIUM</option>
+								<option value="HIGH">HIGH</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-10  col-md-offset-4 " for="pwd">Estimated
+							Date<span style="color: red">*</span>
+						</label>
+						<div class="col-sm-9">
+							<input id="etaid" type="date" class="form-control" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3 col-md-offset-4" for="pwd">Module<span
+							style="color: red">*</span></label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="module" name="module"
+								required>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-10 col-md-offset-4" for="pwd">buildVersion
+							<span style="color: red">*</span>
+						</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" id="submit"
+								name="buildVersion">
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group">
+						<label class="control-label col-sm-3 col-md-offset-2" for="pwd">Status
+							<span style="color: red">*</span>
+						</label>
+						<div class="col-sm-9">
+							<select name="status" class="form-control" id="Status">
+								<option value="" disabled selected>Choose value</option>
+								<option value="NEW">NEW</option>
+								<option value="ASSIGNED">ASSIGNED</option>
+								<option value="OPEN">OPEN</option>
+								<option value="FIXED">FIXED</option>
+								<option value="PENDING_REQUEST">PENDING_RETEST</option>
+								<option value="RETEST">RETEST</option>
+								<option value="REOPEN">REOPEN</option>
+								<option value="VERIFIED">VERIFIED</option>
+								<Option value="CLOSED">CLOSED</Option>
+								<option value="DEFERRED">DEFERRED</option>
+								<option value="DUPLICATE">DUPLICATE</option>
+								<option value="NEED_MORE_INFO">NEED_MORE_INFO</option>
+								<option value="WONT_FIX">WONT_FIX</option>
+								<option value="REJECTED">REJECTED</option>
+								<option value="NOT_A_BUG">NOT_A_BUG</option>
+							</select>
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group">
+							<label class="control-label col-sm-3  col-md-offset-4 " for="pwd">Type
+								<span style="color: red">*</span>
+							</label>
+							<div class="col-sm-9">
+								<select name="type" class="form-control" id="type" required>
+									<option value="" disabled selected>Choose value</option>
+									<option value="RUNTIME">RUNTIME</option>
+									<option value="COMPILETIME">COMPILETIME</option>
+									<option value="ARITHMETIC">ARITHMETIC</option>
+									<option value="LOGICAL">LOGICAL</option>
+									<option value="SYNTAX">SYNTAX</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-md-offset-2" for="pwd">Severity
+								<span style="color: red">*</span>
+							</label>
+							<div class="col-sm-9">
+								<select name="severity" class="form-control" id="severity">
+									<option value="" disabled selected>Choose value</option>
+									<option value="LOW">LOW</option>
+									<option value="MILD">MILD</option>
+									<option value="SEVERE">SEVERE</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-md-offset-2" for="pwd">Synopsis<span
+								style="color: red">*</span></label>
+							<div class="col-sm-9">
+								<textarea minlength="5" maxlength="50" class="form-control"
+									placeholder="Please type your comment in less than 50 characters"
+									id="synopsis" name="synopsis" required rows="2"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-md-offset-2" for="pwd">Product<span
+								style="color: red">*</span></label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="product"
+									name="product" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-3 col-md-offset-4" for="pwd">Description<span
+								style="color: red">*</span></label>
+							<div class="col-sm-9">
+								<textarea minlength="5" maxlength="100" class="form-control"
+									placeholder="Please type your comment in less than 100 characters"
+									id="description" name="description" required rows="2"></textarea>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<br>
+		<button onclick="updateBugStatus()" type="Submit" class="btn btn-first">Update
+			Bug</button>
+	</form>
+	<!-- Footer -->
+	<div>
+		<footer class="page-footer font-small blue">
+
+			<div class="col-lg-12 col-md-12 text-center">
+				<div class="footer-copyright text-center py-3">
+					© 2021 Copyright: <a href="http://localhost:8081/index.html">ServerMonks</a>
+				</div>
+			</div>
+		</footer>
+	</div>
+</body>
+
+</html>
